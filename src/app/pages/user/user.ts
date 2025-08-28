@@ -1,19 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { UserService } from '../../services/user';
 import { IUser } from '../../Types/user';
-import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
+
 import { TableComponent } from '../../components/table/table';
 import {
   MatDialog,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
 } from '@angular/material/dialog';
 import { UserForm } from './user-form/user-form';
 

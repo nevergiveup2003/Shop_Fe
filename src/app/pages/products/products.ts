@@ -8,85 +8,81 @@ import { Category } from '../category/category';
 import { ICategory } from '../../Types/categories';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product';
+import { TableComponent } from '../../components/table/table';
+import { ProductForm } from './product-form/product-form';
+import { MatDialog } from '@angular/material/dialog';
+import { CategoryService } from '../../services/category';
 @Component({
   selector: 'app-products',
-  imports: [MatButtonModule, MatInputModule, MatFormFieldModule, FormsModule,CommonModule],
+  imports: [TableComponent, MatButtonModule],
   templateUrl: './products.html',
   styleUrl: './products.scss',
 })
 export class Products {
   productService = inject(ProductService);
+  categoriesService = inject(CategoryService)
   products: IProduct[] = [];
   categories: ICategory[] = [];
-  isOpenForm = false;
+ showCols = ['id', 'name', 'description', 'price','categoryName', 'actions'];
   getCategoryName(id: number): string {
     return this.categories.find((c) => c.id === id)?.name ?? '';
   }
   getLatestCategories() {
-    this.productService.getProducts().subscribe((result) => {
+    this.categoriesService.getCategory().subscribe((result) => {
       this.categories = result;
     });
   }
 
   ngOnInit() {
-    this.getLatestData();
     this.getLatestCategories(); // <-- load categories thêm ở đây
+    this.getLatestData();
   }
   getLatestData() {
     this.productService.getProducts().subscribe((result) => {
-      this.products = result;
+      // Map data để thêm categoryName cho mỗi product
+      this.products = result.map(product => ({
+        ...product,
+        categoryName: this.getCategoryName(product.categoryId)
+      }));
       console.log(this.products);
     });
   }
 
-  productName!: string;
-  productPrice!: number;
-  productDescription!: string;
-  productCategoryId!: number;
-  addProduct() {
-    console.log(this.productName);
-    this.productService
-      .addProduct(
-        this.productName,
-        this.productDescription,
-        this.productPrice,
-        this.productCategoryId
-      )
-      .subscribe(() => {
-        alert('added successfully');
-        this.isOpenForm = false;
+  edit(product: IProduct) {
+    let ref = this.dialog.open(ProductForm, {
+      panelClass: 'm-auto',
+      data:{
+       productId : product.id,
+      }
+    });
+
+    ref.afterClosed().subscribe((result) => {
+      if (result) {
         this.getLatestData();
-      });
+      }
+    });
   }
-  editId = 0;
-  editProduct(product: IProduct) {
-    this.productName = product.name;
-    this.productDescription = product.description;
-    this.productPrice = product.price;
-    this.productCategoryId = product.categoryId;
-    this.isOpenForm = true;
-    this.editId = product.id;
-  }
-  UpdateProduct() {
-    this.productService
-      .UpdateProduct(
-        this.editId,
-        this.productName,
-        this.productDescription,
-        this.productPrice,
-        this.productCategoryId
-      )
-      .subscribe(() => {
-        alert('Update successfully');
-        this.isOpenForm = false;
-        this.getLatestData();
-        this.editId = 0;
-      });
-  }
-  deleteProduct(id: number) {
-    this.productService.DeleteProduct(id).subscribe(() => {
-      alert('Delete successfully');
+  delete(product: IProduct) {
+    this.productService.deleteProduct(product.id).subscribe(()=>{
+      alert ("Delete successful");
       this.getLatestData();
+    })
+  }
+  add() {
+    this.openDialog();
+  }
+  readonly dialog = inject(MatDialog);
+
+  openDialog(): void {
+    let ref = this.dialog.open(ProductForm, {
+      panelClass: 'm-auto',
+    });
+
+    ref.afterClosed().subscribe((result) => {
+      if (result) {
+        // chỉ reload khi form submit thành công
+        this.getLatestData();
+      }
     });
   }
 }

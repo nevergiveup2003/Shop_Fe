@@ -1,5 +1,5 @@
 <mat-card class="form-card p-8">
-  @if(this.data.userId){<mat-card-title> Update User </mat-card-title>}@else{<mat-card-title> Add User </mat-card-title>}
+  @if(this.data?.userId){<mat-card-title> Update User </mat-card-title>}@else{<mat-card-title> Add User </mat-card-title>}
 
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
     <mat-form-field class="w-full">
@@ -46,7 +46,7 @@
         }"
         [disabled]="userForm.invalid"
       >
-        {{this.data.userId ? "Update" : "Add"}}
+        {{this.data?.userId ? "Update" : "Add"}}
       </button>
     </div>
   </form>

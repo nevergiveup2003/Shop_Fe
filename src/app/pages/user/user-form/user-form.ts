@@ -51,9 +51,9 @@ export class UserForm {
   dialogRef = inject(MatDialogRef<UserForm>);
   data = inject<UserForm>(MAT_DIALOG_DATA);
   ngOnInit() {
-    if (this.data.userId) {
+    if (this.data?.userId) {
       // load user data and patch to form
-      this.userService.getUserById(this.data.userId).subscribe((result) => {
+      this.userService.getUserById(this.data?.userId).subscribe((result) => {
         console.log(result);
         this.userForm.patchValue(result as any);
         this.userForm.get('gender')?.disable();

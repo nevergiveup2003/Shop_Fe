@@ -1,111 +1,11 @@
-<div class="p-8">
-  @if(!isOpenForm){
-  <div class="flex justify-between items-center mb-4">
-    <h1 class="text-xl font-semibold text-center">Products</h1>
-    <button mat-flat-button class="!bg-green-600" (click)="isOpenForm = true">
+<div>
+  <div class="flex justify-between">
+    <h1 class=" text-xl font-semibold">Product List</h1>
+    <button mat-flat-button class="!bg-green-600" (click)="add()">
       Add
     </button>
-  </div>
-
-  <table class="table-auto border-collapse">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>CategoryName</th>
-
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (item of products; track $index) {
-      <tr>
-        <td>{{ item.id }}</td>
-        <td>{{ item.name }}</td>
-        <td>{{ item.description }}</td>
-        <td>{{ item.price }}</td>
-        <td>{{ getCategoryName(item.categoryId) }}</td>
-
-        <td class="flex gap-2">
-          <button
-            mat-flat-button
-            class="!bg-orange-400"
-            (click)="editProduct(item)"
-          >
-            Edit
-          </button>
-          <button
-            mat-flat-button
-            class="!bg-red-600"
-            (click)="deleteProduct(item.id)"
-          >
-            Delete
-          </button>
-        </td>
-      </tr>
-      }
-    </tbody>
-  </table>
-  }@else{
-  <div class="flex">
-    <form action="" class="w-[360px] m-auto shadow-lg py-6 px-16">
-      <h1 class="text-xl font-semibold mb-2">Add Product</h1>
-      <!-- Name -->
-      <mat-form-field class="w-full">
-        <mat-label>Name</mat-label>
-        <input matInput name="productName" [(ngModel)]="productName" />
-      </mat-form-field>
-      <!-- Description -->
-      <mat-form-field class="w-full">
-        <mat-label>Description</mat-label>
-        <input
-          matInput
-          name="productDescription"
-          [(ngModel)]="productDescription"
-        /> </mat-form-field
-      ><mat-form-field class="w-full">
-        <!-- Price -->
-        <mat-label>Price</mat-label>
-        <input matInput name="productPrice" [(ngModel)]="productPrice" />
-      </mat-form-field>
-      <!-- Category -->
-      <mat-form-field class="w-full">
-        <mat-label>Category</mat-label>
-        <select
-          matNativeControl
-          name="productCategoryId"
-          [(ngModel)]="productCategoryId"
-        >
-          <option class="p-3" *ngFor="let c of categories" [value]="c.id">
-            {{ c.name }}
-          </option>
-        </select>
-      </mat-form-field>
-
-      <div class="w-full flex justify-center">
-        @if(editId){
-        <button
-          type="button"
-          mat-flat-button
-          class="!bg-green-600"
-          (click)="UpdateProduct()"
-        >
-          Update
-        </button>
-        }@else {
-        <button
-          type="button"
-          mat-flat-button
-          class="!bg-green-600"
-          (click)="addProduct()"
-        >
-          Add
-        </button>
-        }
-      </div>
-    </form>
-  </div>
-  }
+</div>
+  <app-table [data]="products" [displayedColumns]="showCols"
+  (onEdit)="edit($event)"
+  (onDelete)="delete($event)"></app-table>
 </div>

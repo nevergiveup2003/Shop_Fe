@@ -1,60 +1,64 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { CategoryService } from '../../services/category';
 import { ICategory } from '../../Types/categories';
+import { TableComponent } from '../../components/table/table';
+import { CategoryForm } from './category-form/category-form';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-category',
-  imports: [MatButtonModule, MatInputModule, MatFormFieldModule, FormsModule],
+  imports: [MatButtonModule, TableComponent],
   templateUrl: './category.html',
-  styleUrl: './category.scss'
+  styleUrl: './category.scss',
 })
 export class Category {
- categoryService = inject(CategoryService)
- constructor(){}
- categories : ICategory[] = [];
-  isOpenForm = false;
-  
+  categoryService = inject(CategoryService);
+  constructor() {}
+  categories: ICategory[] = [];
+  showCols = ['id', 'name', 'description','actions'];
+
   getLatestData() {
-    this.categoryService.getCategory().subscribe((result)=>{
+    this.categoryService.getCategory().subscribe((result) => {
       this.categories = result;
       console.log(this.categories);
-    })
+    });
   }
   ngOnInit(){
     this.getLatestData();
   }
-  categoryName!:string;
-  categoryDescription!:string;
-  addCategory(){
-    this.categoryService.addCategory(this.categoryName,this.categoryDescription).subscribe(()=>{
-      alert('added successfully');
-      this.isOpenForm = false;
+  edit(category:ICategory){
+    let ref = this.dialog.open(CategoryForm,{
+      panelClass:'m-auto',
+      data:{
+        categoryId:category.id,
+      }
+    });
+    ref.afterClosed().subscribe((result) => {
+      if(result){
+        this.getLatestData();
+      }
+    })
+  }
+  delete(category:ICategory){
+    this.categoryService.deleteCategory(category.id).subscribe(()=>{
+      alert("delete successful");
       this.getLatestData();
     })
   }
-  editId = 0;
-  editCategory(category:ICategory){
-    this.categoryName = category.name;
-    this.categoryDescription = category.description;
-    this.isOpenForm = true;
-    this.editId = category.id;
+  add(){
+    this.openDialog();
   }
-  updateCategory(){
-    this.categoryService.updateCategory(this.editId,this.categoryName,this.categoryDescription).subscribe(()=>{
-      alert('Update successfully');
-      this.isOpenForm = false;
-      this.getLatestData();
-      this.editId=0;
-    })
-  }
-  deleteCategory(id:number){
-    this.categoryService.deleteCategory(id).subscribe(()=>{
-      alert('Delete successfully');
-      this.getLatestData();
+  readonly dialog = inject(MatDialog);
+  openDialog():void{
+    let ref = this.dialog.open(CategoryForm,{
+      panelClass:'m-auto',
+    });
+    ref.afterClosed().subscribe((result) =>{
+      if(result){
+        this.getLatestData();
+      }
     })
   }
 }

@@ -1,1 +1,29 @@
-<p>category-form works!</p>
+<mat-card class="form-card p-8">
+  @if(this.data?.categoryId) {
+  <mat-card-title>Update Category</mat-card-title>
+  } @else{<mat-card-title>Add Category</mat-card-title>}
+  <form action="" [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+    <mat-form-field class="w-full">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+    <mat-form-field class="w-full">
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description" />
+    </mat-form-field>
+    <div class="flex justify-center mt-4">
+      <button
+        mat-flat-button
+        type="submit"
+        class="text-white"
+        [ngClass]="{
+          'bg-gray-600': categoryForm.invalid,
+          '!bg-green-400': categoryForm.valid
+        }"
+        [disabled]="categoryForm.invalid"
+      >
+        {{ this.data?.categoryId ? "Update" : "Add" }}
+      </button>
+    </div>
+  </form>
+</mat-card>

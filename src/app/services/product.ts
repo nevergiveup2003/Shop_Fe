@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { IProduct } from '../Types/product';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -9,38 +10,24 @@ export class ProductService {
   constructor() {}
 
   http = inject(HttpClient);
-  apiUrl = 'https://localhost:7081';
+  private api = environment.apiUrl;
   getProducts() {
-    return this.http.get<IProduct[]>(this.apiUrl + '/api/Product');
+    return this.http.get<IProduct[]>(`${this.api}/api/Product`);
   }
-  addProduct(
-    name: string,
-    description: string,
-    price: number,
-    categoryId: number
-  ) {
-    return this.http.post(this.apiUrl + '/api/Product', {
-      name: name,
-      description: description,
-      price: price,
-      categoryId: categoryId,
-    });
+  getProductById(id: number) {
+    return this.http.get<IProduct>(`${this.api}/api/Product/${id}`);
   }
-  UpdateProduct(
-    id: number,
-    name: string,
-    description: string,
-    price: number,
-    categoryId: number
-  ) {
-    return this.http.put(this.apiUrl + '/api/Product/' + id, {
-      name: name,
-      description: description,
-      price: price,
-      categoryId: categoryId,
-    });
+  addProduct(product: IProduct) {
+    return this.http.post<IProduct>(`${this.api}/api/Product`, product);
   }
-  DeleteProduct(id: number) {
-    return this.http.delete(this.apiUrl + '/api/Product/' + id);
+  updateProduct(product: IProduct) {
+    return this.http.put<IProduct>(
+      `${this.api}/api/Product/${product.id}`,
+      product
+    );
+  }
+
+  deleteProduct(id: number) {
+    return this.http.delete(`${this.api}/api/Product/${id}`);
   }
 }

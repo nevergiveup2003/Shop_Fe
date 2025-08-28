@@ -1,30 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ICategory } from '../Types/categories';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoryService {
   http = inject(HttpClient);
-  apiUrl = 'https://localhost:7081';
+  private api = environment.apiUrl;
   constructor() {}
   getCategory() {
-    return this.http.get<ICategory[]>(this.apiUrl + '/api/Category');
+    return this.http.get<ICategory[]>(`${this.api}/api/Category`);
   }
-  addCategory(name: string, description: string) {
-    return this.http.post(this.apiUrl + '/api/Category', {
-      name: name,
-      description: description,
-    });
+  getCategoryById(id:number)
+  {
+    return this.http.get<ICategory>(`${this.api}/api/Category/${id}`);
   }
-  updateCategory(id: number, name: string, description: string) {
-    return this.http.put(this.apiUrl + '/api/Category/' + id, {
-      name: name,
-      description: description,
-    });
+  addCategory(category:ICategory) {
+    return this.http.post<ICategory>(`${this.api}/api/Category`,category)
+  }
+  updateCategory(category:ICategory) {
+    return this.http.put(`${this.api}/api/Category/${category.id}`, category);
   }
   deleteCategory(id: number) {
-    return this.http.delete(this.apiUrl + '/api/Category/' + id);
+    return this.http.delete(`${this.api}/api/Category/${id}`);
   }
 }
