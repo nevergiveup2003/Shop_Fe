@@ -1,0 +1,91 @@
+<div class="p-8">
+  @if(!isOpenForm){
+  <div class="flex justify-between items-center mb-4">
+    <h1 class="text-xl font-semibold text-center">Categories</h1>
+    <button mat-flat-button class="!bg-green-600" (click)="isOpenForm = true">
+      Add
+    </button>
+  </div>
+
+  <table class="table-auto border-collapse">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Description</th>
+
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of categories; track $index) {
+      <tr>
+        <td>{{ item.id }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.description }}</td>
+
+        <td class="flex gap-2">
+          <button
+            mat-flat-button
+            class="!bg-orange-400"
+            (click)="editCategory(item)"
+          >
+            Edit
+          </button>
+          <button
+            mat-flat-button
+            class="!bg-red-600"
+            (click)="deleteCategory(item.id)"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  }@else{
+  <div class="flex">
+    <form action="" class="w-[360px] m-auto shadow-lg py-6 px-16">
+      <h1 class="text-xl font-semibold mb-2">Add Product</h1>
+      <!-- Name -->
+      <mat-form-field class="w-full">
+        <mat-label>Name</mat-label>
+        <input matInput name="categoryName" [(ngModel)]="categoryName" />
+      </mat-form-field>
+      <!-- Description -->
+
+      <mat-form-field class="w-full">
+        <mat-label>Description</mat-label>
+        <input
+          matInput
+          name="categoryDescription"
+          [(ngModel)]="categoryDescription"
+        />
+      </mat-form-field>
+
+      <div class="w-full flex justify-center">
+        @if(editId){
+        <button
+          type="button"
+          mat-flat-button
+          class="!bg-green-600"
+          (click)="updateCategory()"
+        >
+          Update
+        </button>
+        }@else {
+        <button
+          type="button"
+          mat-flat-button
+          class="!bg-green-600"
+          (click)="addCategory()"
+        >
+          Add
+        </button>
+        }
+      </div>
+    </form>
+  </div>
+  }
+</div>

@@ -1,0 +1,53 @@
+<mat-card class="form-card p-8">
+  @if(this.data.userId){<mat-card-title> Update User </mat-card-title>}@else{<mat-card-title> Add User </mat-card-title>}
+
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <mat-form-field class="w-full">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field class="w-full">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" />
+    </mat-form-field>
+
+    <mat-form-field class="w-full">
+      <mat-label>Phone</mat-label>
+      <input matInput type="tel" formControlName="phone" />
+    </mat-form-field>
+    <div class="mt-4">
+      <label class="block mb-2">Gender</label>
+      <mat-radio-group formControlName="gender" class="flex gap-4">
+        <mat-radio-button [value]="1">Nam</mat-radio-button>
+        <mat-radio-button [value]="2">Nữ</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <!-- Date of Birth -->
+    <mat-form-field class="w-full">
+      <mat-label>Date of Birth</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" />
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <div class="flex justify-center mt-4">
+      <button
+        mat-flat-button
+        type="submit"
+        class="text-white"
+        [ngClass]="{
+          'bg-gray-600': userForm.invalid,
+          '!bg-green-400': userForm.valid
+        }"
+        [disabled]="userForm.invalid"
+      >
+        {{this.data.userId ? "Update" : "Add"}}
+      </button>
+    </div>
+  </form>
+</mat-card>

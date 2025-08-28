@@ -1,0 +1,39 @@
+<mat-card class="p-4">
+  <table mat-table [dataSource]="data" class="w-full">
+    <!-- Dynamic columns -->
+    @for (item of displayedColumns; track $index) { @if (item === 'actions') {
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef class="text-center">Actions</th>
+      <td mat-cell *matCellDef="let element" class="text-center">
+        <div class="flex justify-center gap-2">
+          <button
+            mat-flat-button
+            class="!bg-orange-400 text-white"
+            (click)="edit(element)"
+          >
+            Edit
+          </button>
+          <button
+            mat-flat-button
+            class="!bg-red-600 text-white"
+            (click)="delete(element)"
+          >
+            Delete
+          </button>
+        </div>
+      </td>
+    </ng-container>
+    } @else {
+    <ng-container [matColumnDef]="item">
+      <th mat-header-cell *matHeaderCellDef class="text-left">{{ item }}</th>
+      <td mat-cell *matCellDef="let element" class="text-left">
+        {{ element[item] }}
+      </td>
+    </ng-container>
+    } }
+
+    <!-- Render rows -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</mat-card>
