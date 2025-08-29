@@ -1,9 +1,21 @@
 <header>
-  <mat-toolbar class="bg-purple-300!">
-    <button (click)="drawer.toggle()" mat-icon-button>
-      <mat-icon>menu</mat-icon>
+  <mat-toolbar class="!bg-purple-300 flex justify-between">
+    <div class="flex items-center">
+      <button
+        (click)="drawer.toggle()"
+        mat-icon-button
+        class="flex items-center"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
       <span>shop</span>
+    </div>
+    @if(authService.isLoggedIn){
+
+    <button (click)="logout()" mat-icon-button>
+      <mat-icon> logout </mat-icon>
     </button>
+    }
   </mat-toolbar>
 </header>
 <mat-drawer-container class="">
@@ -11,17 +23,21 @@
     class="w-[250px] bg-white shadow-lg"
     #drawer
     [mode]="'side'"
-    [opened]="true"
+    [opened]="authService.isLoggedIn"
   >
     <div class="flex flex-col gap-4 p-4 items-center text-blue-300">
-      <a routerLink="/">Dashboard</a>
+      
+      @if(authService.isUser){
+      <a routerLink="/user-dashboard">User Dashboard</a>
+
+      }@else{<a routerLink="/">Dashboard</a>
       <a routerLink="/category">Category</a>
       <a routerLink="/product">Product</a>
-      <a routerLink="/user">User</a>
+      <a routerLink="/user">User</a>}
     </div>
   </mat-drawer>
   <mat-drawer-content>
-    <main class="min-h-screen ">
+    <main class="min-h-screen">
       <router-outlet></router-outlet>
     </main>
   </mat-drawer-content>
