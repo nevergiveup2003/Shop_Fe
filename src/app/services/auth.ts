@@ -43,4 +43,11 @@ export class AuthService {
       return false;
     }
   }
+  get authDetail(): IAuthToken | null {
+    if(!this.isLoggedIn) {
+      return null;}
+      let token : IAuthToken = JSON.parse(localStorage.getItem('auth')!)
+      return token
+    
+  }
 }

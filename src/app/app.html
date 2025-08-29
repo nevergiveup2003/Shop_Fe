@@ -11,10 +11,13 @@
       <span>shop</span>
     </div>
     @if(authService.isLoggedIn){
-
-    <button (click)="logout()" mat-icon-button>
+    <div class="flex gap-2 items-center">
+      <span class="!text-white">{{ authService.authDetail?.email }}</span>
+       <button (click)="logout()" mat-icon-button>
       <mat-icon> logout </mat-icon>
     </button>
+    </div>
+
     }
   </mat-toolbar>
 </header>
@@ -26,7 +29,6 @@
     [opened]="authService.isLoggedIn"
   >
     <div class="flex flex-col gap-4 p-4 items-center text-blue-300">
-      
       @if(authService.isUser){
       <a routerLink="/user-dashboard">User Dashboard</a>
 

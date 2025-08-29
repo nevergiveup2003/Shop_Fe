@@ -57,6 +57,9 @@ export class User {
   openDialog(): void {
     let ref = this.dialog.open(UserForm, {
       panelClass: 'm-auto',
+      data:{
+        
+      }
     });
 
     ref.afterClosed().subscribe((result) => {
