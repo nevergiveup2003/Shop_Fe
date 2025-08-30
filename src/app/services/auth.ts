@@ -44,10 +44,16 @@ export class AuthService {
     }
   }
   get authDetail(): IAuthToken | null {
-    if(!this.isLoggedIn) {
-      return null;}
-      let token : IAuthToken = JSON.parse(localStorage.getItem('auth')!)
-      return token
-    
+    if (!this.isLoggedIn) {
+      return null;
+    }
+    let token: IAuthToken = JSON.parse(localStorage.getItem('auth')!);
+    return token;
+  }
+  getProfile() {
+    return this.http.get(`${this.apiUrl}/api/Auth/Profile`);
+  }
+  updateProfile(profile:any) {
+    return this.http.post(`${this.apiUrl}/api/Auth/Profile`,profile);
   }
 }

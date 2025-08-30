@@ -5,6 +5,7 @@ import { Category } from './pages/category/category';
 import { User } from './pages/user/user';
 import { Login } from './pages/login/login';
 import { UserDashboard } from './pages/user-dashboard/user-dashboard';
+import { Profile } from './pages/profile/profile';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -14,4 +15,7 @@ export const routes: Routes = [
   { path: 'user', component: User },
   { path: 'login', component: Login },
   { path: 'user-dashboard', component: UserDashboard },
+  {
+    path:'profile',component:Profile
+  }
 ];

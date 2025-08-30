@@ -1,0 +1,54 @@
+<mat-card class="login-card">
+  <h2 class="text-center">Profile</h2>
+
+  <form [formGroup]="profileForm" (ngSubmit)="onUpdate()">
+   
+<div class="w-full mb-5 flex flex-col items-center gap-2" >
+  <img class="w-[200px] rounded-full " [src]="imageSrc" alt="">
+  <input class="w-[88px] cursor-pointer bg-gray-400 !rounded-sm" type="file" (change)="fileUpload($event)">
+</div>
+    <!-- Password -->
+    <mat-form-field class="w-full">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        formControlName="name"
+        required
+        type="text"
+      />
+    </mat-form-field>
+     <!-- Email -->
+    <mat-form-field class="w-full">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        formControlName="email"
+        type="email"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field class="w-full">
+      <mat-label>Phone</mat-label>
+      <input
+        matInput
+        formControlName="phone"
+        type="text"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field class="w-full">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        formControlName="password"
+        type="password"
+        required
+      />
+    </mat-form-field>
+
+    <!-- Submit Button -->
+    <button mat-raised-button class="!bg-green-500 w-full mt-4" type="submit">
+      Update
+    </button>
+  </form>
+</mat-card>
